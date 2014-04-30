@@ -20,9 +20,12 @@
 package com.samanamp.simulation;
 
 import com.samanamp.Node;
+import org.jgrapht.graph.AbstractGraph;
 
 public interface SimulationEngine {
 
-    public int sigmaOfNode(Node node, int budget);
+    public abstract void setGraph(AbstractGraph graph);
+
+    public abstract int sigmaOfNode(Node node, int budget);
 
 }
