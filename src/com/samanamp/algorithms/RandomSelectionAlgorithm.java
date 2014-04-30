@@ -50,7 +50,8 @@ public class RandomSelectionAlgorithm {
         Random randomGen = new Random();
         randomGen.setSeed(System.currentTimeMillis());
 
-        Node[] nodes = (Node[]) graph.vertexSet().toArray();
+
+        Node[] nodes = graph.vertexSet().toArray(new Node[graph.vertexSet().size()]);
         LinkedList<Node> selectedNodes = new LinkedList<Node>();
         Node tmpNode;
         int arraySize = nodes.length;

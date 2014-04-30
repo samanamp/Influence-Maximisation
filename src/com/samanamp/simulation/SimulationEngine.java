@@ -20,12 +20,12 @@
 package com.samanamp.simulation;
 
 import com.samanamp.Node;
-import org.jgrapht.graph.AbstractGraph;
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 
 public interface SimulationEngine {
 
-    public abstract void setGraph(AbstractGraph graph);
+    public void setGraph(DirectedWeightedMultigraph graph);
 
-    public abstract int sigmaOfNode(Node node, int budget);
+    public int sigmaOfNode(Node node, int budget);
 
 }

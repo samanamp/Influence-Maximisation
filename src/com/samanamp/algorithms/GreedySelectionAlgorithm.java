@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 
-public class GreedyAlgorithm implements Algorithm {
+public class GreedySelectionAlgorithm implements Algorithm {
 
     private DirectedWeightedMultigraph<Node, DefaultWeightedEdge> graph;
     private SimulationEngine simulator;
@@ -37,7 +37,7 @@ public class GreedyAlgorithm implements Algorithm {
     private int maxTime;
     private int runs;
 
-    public GreedyAlgorithm(DirectedWeightedMultigraph graph, Class<? extends SimulationEngine> SimulationClass) throws IllegalAccessException, InstantiationException {
+    public GreedySelectionAlgorithm(DirectedWeightedMultigraph graph, Class<? extends SimulationEngine> SimulationClass) throws IllegalAccessException, InstantiationException {
         this.graph = graph;
         this.simulator = SimulationClass.newInstance();
         simulator.setGraph(graph);
