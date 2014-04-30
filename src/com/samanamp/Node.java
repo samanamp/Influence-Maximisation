@@ -24,9 +24,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Random;
 
-/**
- * Created by saman on 30/04/2014.
- */
 public class Node {
     public String name;
     public int cost;

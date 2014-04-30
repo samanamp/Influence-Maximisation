@@ -21,9 +21,6 @@ package com.samanamp.simulation;
 
 import com.samanamp.Node;
 
-/**
- * Created by saman on 30/04/2014.
- */
 public interface SimulationEngine {
 
     public int sigmaOfNode(Node node, int budget);

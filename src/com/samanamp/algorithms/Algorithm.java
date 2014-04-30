@@ -19,9 +19,6 @@
 
 package com.samanamp.algorithms;
 
-/**
- * Created by saman on 30/04/2014.
- */
 public interface Algorithm {
 
     public void runAlgoAndSimulation(int maxCost, int maxTime, int runs);
