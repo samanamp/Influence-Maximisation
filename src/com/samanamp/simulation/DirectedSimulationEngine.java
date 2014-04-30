@@ -43,11 +43,7 @@ public class DirectedSimulationEngine implements SimulationEngine {
     public int sigmaOfNode(Node node, int budget) {
         node.active = true;
         node.selected = true;
-        //long startTime = System.nanoTime();
-        //System.out.print(node);
-        //sigmaOfNode(node, budget, 0);
-        //long finishTime = System.nanoTime();
-        //System.out.println("Time: "+(finishTime-startTime));
+        resetTraversed();
         return sigmaOfNode(node, budget, 0);
     }
 
@@ -68,5 +64,11 @@ public class DirectedSimulationEngine implements SimulationEngine {
             }
         }
         return nodeSigma;
+    }
+
+    public void resetTraversed() {
+        Iterator<Node> nodeIt = graph.vertexSet().iterator();
+        while (nodeIt.hasNext())
+            nodeIt.next().traversed = false;
     }
 }

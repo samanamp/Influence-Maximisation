@@ -101,10 +101,4 @@ public class GraphPopulator {
         graph.addEdge(fromNode, toNode);
     }
 
-    public void resetGraph() {
-        Iterator<Node> nodeIt = graph.vertexSet().iterator();
-        while (nodeIt.hasNext())
-            nodeIt.next().resetAll();
-    }
-
 }

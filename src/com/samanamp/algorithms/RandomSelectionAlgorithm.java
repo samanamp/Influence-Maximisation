@@ -25,6 +25,7 @@ import org.apache.commons.collections4.iterators.LoopingIterator;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -72,6 +73,7 @@ public class RandomSelectionAlgorithm {
         int sigma = 0;
         for (int i = 0; i < runs; i++) {
             selectedNodesIterator.reset();
+            resetGraph();
             for (int j = 0; j < selectedNodes.size(); j++) {
                 sigma += simulator.sigmaOfNode(selectedNodesIterator.next(), maxTime);
             }
@@ -93,5 +95,11 @@ public class RandomSelectionAlgorithm {
                 "\nTotal Influence Achieved:" + finalSigma +
                 "\n======================================";
         System.out.println(result);
+    }
+
+    public void resetGraph() {
+        Iterator<Node> nodeIt = graph.vertexSet().iterator();
+        while (nodeIt.hasNext())
+            nodeIt.next().resetAll();
     }
 }
