@@ -77,15 +77,16 @@ public class GreedySelectionAlgorithm implements Algorithm {
 
             count = 0;
             while (nodes.hasNext()) {
-                time1 = System.currentTimeMillis();
                 count++;
-                resetGraph();
                 currentNode = nodes.next();
                 System.out.print("\n" + count);
-                time2 = System.currentTimeMillis();
                 if (selectedNodes.contains(currentNode) || currentNode.active) continue;
+                if (currentBudget < currentNode.cost || currentNode.cost == 0) continue;
 
-                if (currentBudget < currentNode.cost) continue;
+                time1 = System.currentTimeMillis();
+                resetGraph();
+                time2 = System.currentTimeMillis();
+
                 System.out.print(".");
 
                 if (selectedNodes.size() > 0) {
