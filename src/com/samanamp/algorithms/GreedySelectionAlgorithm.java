@@ -36,11 +36,13 @@ public class GreedySelectionAlgorithm implements Algorithm {
     private int maxCost;
     private int maxTime;
     private int runs;
+    private LinkedList<Node> selectedNodes;
 
     public GreedySelectionAlgorithm(DirectedWeightedMultigraph graph, Class<? extends SimulationEngine> SimulationClass) throws IllegalAccessException, InstantiationException {
         this.graph = graph;
         this.simulator = SimulationClass.newInstance();
         simulator.setGraph(graph);
+        selectedNodes = new LinkedList<Node>();
     }
 
     public void runAlgoAndSimulation(int maxCost, int maxTime, int runs) {
@@ -48,26 +50,80 @@ public class GreedySelectionAlgorithm implements Algorithm {
         this.maxTime = maxTime;
         this.runs = runs;
 
-        Iterator<Node> nodes = graph.vertexSet().iterator();
-        LinkedList<Node> selectedNodes = new LinkedList<Node>();
-        Node tmpNode;
-        for (int currentCost = 0; currentCost < maxCost && nodes.hasNext(); ) {
-            tmpNode = nodes.next();
-            if (tmpNode.cost + currentCost <= maxCost) {
-                selectedNodes.add(tmpNode);
-                currentCost += tmpNode.cost;
-            }
-        }
-        System.out.println("#nodes selected: " + selectedNodes.size());
-        runSimulation(selectedNodes);
+
+        selectNodes();
+        System.out.println("#nodes selected: " + selectedNodes);
+        runSimulation();
     }
 
-    private void runSimulation(LinkedList<Node> selectedNodes) {
+    private void selectNodes() {
+        int currentBudget = maxCost;
+        Iterator<Node> nodes;
+        Iterator<Node> selectedNodesIterator;
+        Node currentNode;
+        Node highestNode;
+        Node dummyNode = new Node("Dummy");
+        dummyNode.cost = 1;
+        dummyNode.reward = 0;
+        int count;
+        DirectedWeightedMultigraph<Node, DefaultWeightedEdge> tempGraph = graph;
+        long time1;
+        long time2;
+        long time3;
+        long time4;
+        while (currentBudget > 0) {
+            nodes = graph.vertexSet().iterator();
+            highestNode = dummyNode;
+
+            count = 0;
+            while (nodes.hasNext()) {
+                time1 = System.currentTimeMillis();
+                count++;
+                resetGraph();
+                currentNode = nodes.next();
+                System.out.print("\n" + count);
+                time2 = System.currentTimeMillis();
+                if (selectedNodes.contains(currentNode) || currentNode.active) continue;
+
+                if (currentBudget < currentNode.cost) continue;
+                System.out.print(".");
+
+                if (selectedNodes.size() > 0) {
+                    selectedNodesIterator = selectedNodes.iterator();
+                    while (selectedNodesIterator.hasNext())
+                        simulator.sigmaOfNode(selectedNodesIterator.next(), maxTime);
+
+                }
+                time3 = System.currentTimeMillis();
+                currentNode.reward = simulator.sigmaOfNode(currentNode, maxTime);
+                System.out.print("S");
+                if (currentNode.reward > highestNode.reward) {
+                    System.out.print(".");
+                    highestNode = currentNode;
+                    System.out.print("H");
+                }
+                time4 = System.currentTimeMillis();
+                System.out.print("F:" + (time2 - time1) + ":" + (time3 - time2) + ":" + (time4 - time3) + ":" + (time4 - time1) + "+");
+            }
+
+            selectedNodesIterator = selectedNodes.iterator();
+            while (selectedNodesIterator.hasNext()) {
+                simulator.sigmaOfNode(selectedNodesIterator.next(), maxTime);
+            }
+            tempGraph = (DirectedWeightedMultigraph<Node, DefaultWeightedEdge>) graph.clone();
+            selectedNodes.add(highestNode);
+            currentBudget -= highestNode.cost;
+            System.out.print(selectedNodes.size() + ":" + highestNode);
+        }
+    }
+
+    private void runSimulation() {
         LoopingIterator<Node> selectedNodesIterator = new LoopingIterator<Node>(selectedNodes);
 
         int sigma = 0;
         for (int i = 0; i < runs; i++) {
             selectedNodesIterator.reset();
+            resetGraph();
             for (int j = 0; j < selectedNodes.size(); j++) {
                 sigma += simulator.sigmaOfNode(selectedNodesIterator.next(), maxTime);
             }
@@ -90,5 +146,11 @@ public class GreedySelectionAlgorithm implements Algorithm {
                 "\n======================================";
         System.out.println(result);
     }
-}
 
+    public void resetGraph() {
+        Iterator<Node> nodeIt = graph.vertexSet().iterator();
+
+        while (nodeIt.hasNext())
+            nodeIt.next().resetAll();
+    }
+}

@@ -27,6 +27,7 @@ import java.util.Random;
 public class Node {
     public String name;
     public int cost;
+    public int reward;
     public double activationProbability;
     public boolean traversed = false;
     public boolean active = false;
@@ -50,6 +51,7 @@ public class Node {
 
     public void addCostAndProbability(int inDegreeOfNode, int outDegreeOfNode) {
         cost = outDegreeOfNode;
+        reward = cost;
         activationProbability = 10 / (inDegreeOfNode == 0 ? 10 : (float) (inDegreeOfNode + 10));
     }
 
@@ -64,7 +66,7 @@ public class Node {
     }
 
     public String toString() {
-        return "<" + name + ":" + cost + ">";
+        return "<" + name + ":" + cost + ":" + reward + ">";
     }
 
     @Override
