@@ -81,12 +81,12 @@ public class GreedySelectionAlgorithm implements Algorithm {
             while (nodes.hasNext()) {
                 count++;
                 currentNode = nodes.next();
-                System.out.print("\n" + count);
+                //System.out.print("\n" + count);
                 if (selectedNodes.contains(currentNode) || currentNode.active) continue;
                 if (currentBudget < currentNode.cost || currentNode.cost == 0) continue;
 
 
-                System.out.print(".");
+                //System.out.print(".");
 
                 if (selectedNodes.size() > 0) {
                     selectedNodesIterator = selectedNodes.iterator();
