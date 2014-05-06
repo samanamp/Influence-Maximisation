@@ -48,29 +48,26 @@ public class DirectedThetaSimulationEngine implements SimulationEngine {
         node.active = true;
         node.selected = true;
         resetTraversed();
+        //System.out.println(node.cost);
         return sigmaOfNode(node, budget, 0);
     }
 
     private double sigmaOfNode(Node node, int timeBudget, int currentTime) {
-        Node targetNode;
+
         if (currentTime > timeBudget) return 0;
         if (node.active && !node.selected) return 0;
         node.traversed = true;
-        double nodeSigma = 0;
-        if (node.activationImpulse(MAX_PROBABILITY)) {
+        int nodeSigma = 0;
+        if (node.activationImpulse(1)) {
             nodeSigma++;
             Iterator<DefaultWeightedEdge> edgeIterator = graph.outgoingEdgesOf(node).iterator();
             DefaultWeightedEdge tmpEdge;
             int nextTime = currentTime + node.edgeTime;
             while (edgeIterator.hasNext()) {
                 tmpEdge = edgeIterator.next();
-                targetNode = graph.getEdgeTarget(tmpEdge);
-
-                nodeSigma += sigmaOfNode(targetNode, timeBudget, nextTime) * targetNode.activationProbability;
-                System.out.println(nodeSigma + "::" + node.name + ":" + targetNode.name + ":" + targetNode.activationProbability);
+                nodeSigma += sigmaOfNode(graph.getEdgeTarget(tmpEdge), timeBudget, nextTime);
             }
         }
-        System.out.println(node.name + ":" + nodeSigma);
         return nodeSigma;
     }
 

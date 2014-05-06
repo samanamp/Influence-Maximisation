@@ -71,11 +71,13 @@ public class GreedySelectionAlgorithm implements Algorithm {
         long time2;
         long time3;
         long time4;
+        System.out.println("Starting greedy algorithm...");
         while (currentBudget > 0) {
             nodes = graph.vertexSet().iterator();
             highestNode = dummyNode;
 
             count = 0;
+            time1 = System.currentTimeMillis();
             while (nodes.hasNext()) {
                 count++;
                 currentNode = nodes.next();
@@ -83,9 +85,6 @@ public class GreedySelectionAlgorithm implements Algorithm {
                 if (selectedNodes.contains(currentNode) || currentNode.active) continue;
                 if (currentBudget < currentNode.cost || currentNode.cost == 0) continue;
 
-                time1 = System.currentTimeMillis();
-                resetGraph();
-                time2 = System.currentTimeMillis();
 
                 System.out.print(".");
 
@@ -95,17 +94,19 @@ public class GreedySelectionAlgorithm implements Algorithm {
                         simulator.sigmaOfNode(selectedNodesIterator.next(), maxTime);
 
                 }
-                time3 = System.currentTimeMillis();
+
                 currentNode.reward = simulator.sigmaOfNode(currentNode, maxTime);
-                System.out.print("S");
+                //System.out.print("S");
                 if (currentNode.reward > highestNode.reward) {
-                    System.out.print(".");
+                    //System.out.print(".");
                     highestNode = currentNode;
-                    System.out.print("H");
+                    //System.out.print("H");
                 }
-                time4 = System.currentTimeMillis();
-                System.out.print("F:" + (time2 - time1) + ":" + (time3 - time2) + ":" + (time4 - time3) + ":" + (time4 - time1) + "+");
+
+                //System.out.print("F:" + (time2 - time1) + ":" + (time3 - time2) + ":" + (time4 - time3) + ":" + (time4 - time1) + "+");
+                resetGraph();
             }
+            time2 = System.currentTimeMillis();
 
             selectedNodesIterator = selectedNodes.iterator();
             while (selectedNodesIterator.hasNext()) {
@@ -114,7 +115,7 @@ public class GreedySelectionAlgorithm implements Algorithm {
             tempGraph = (DirectedWeightedMultigraph<Node, DefaultWeightedEdge>) graph.clone();
             selectedNodes.add(highestNode);
             currentBudget -= highestNode.cost;
-            System.out.print(selectedNodes.size() + ":" + highestNode);
+            System.out.print(selectedNodes.size() + ":" + highestNode + ": in " + (time2 - time1) / 60000 + "minutes");
         }
     }
 
