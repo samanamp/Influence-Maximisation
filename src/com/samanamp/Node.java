@@ -27,7 +27,7 @@ import java.util.Random;
 public class Node {
     public String name;
     public int cost;
-    public int reward;
+    public double reward;
     public double activationProbability;
     public boolean traversed = false;
     public boolean active = false;
@@ -59,6 +59,16 @@ public class Node {
         if (active) return true;
 
         if (randomGen.nextFloat() < activationProbability) {
+            active = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean activationImpulse(float probability) {
+        if (active) return true;
+
+        if (activationProbability < probability) {
             active = true;
             return true;
         }
